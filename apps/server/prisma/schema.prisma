@@ -17,7 +17,7 @@ model Glimpse {
   lifetime    DateTime
   secret      String?
   accessCount Int      @default(0)
-  public      Boolean  @default(true)
+  isPublic    Boolean  @default(true)
   thumb       String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
