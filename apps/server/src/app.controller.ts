@@ -8,9 +8,9 @@ import { UseZodGuard } from 'nestjs-zod';
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  @Get('glimpses')
-  async getAllGlimpses(): Promise<Glimpse[]> {
-    return await this.appService.getAllGlimpses();
+  @Get('glimpses/:orderBy')
+  async getAllGlimpses(@Param('orderBy') orderBy: string): Promise<Glimpse[]> {
+    return await this.appService.getAllGlimpses(orderBy);
   }
   @Get('glimpse/:id')
   async getGlimpse(@Param('id') id: string): Promise<Glimpse> {

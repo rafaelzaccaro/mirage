@@ -1,16 +1,35 @@
-import { GlimpseCard } from "@web/components/GlimpseCard";
-import { Stack } from "@chakra-ui/react";
+import { Logo } from '@web/components/Logo'
+import { Stack, Divider, Text } from '@chakra-ui/react'
+import { golos } from './theme'
+import { Carousel } from '@web/components/Carousel'
+import { Glimpse } from '@web/lib/GlimpseType'
 
-function truncateText(text: string): string {
-  return text.length > 255 ? text.substring(0, 255) + "..." : text
-}
 export default async function Home() {
-  const res = await fetch('http://localhost:7777/glimpses', { cache: 'no-store'});
-  const data = await res.json()
+  const popular: Glimpse[] = await (
+    await fetch('http://localhost:7777/glimpses/popular', {
+      cache: 'no-store',
+    })
+  ).json()
+  const recent: Glimpse[] = await (
+    await fetch('http://localhost:7777/glimpses/recent', {
+      cache: 'no-store',
+    })
+  ).json()
 
-  return <Stack direction={'row'} spacing={'3'}>{data.map((d: any) => {
-    return (
-      <GlimpseCard key={d.id} slug={d.slug} content={truncateText(d.content)} secret={d.secret} lifetime={d.lifetime} thumb={d.thumb}/>
-    )
-  })}</Stack>;
+  return (
+    <>
+      <Logo></Logo>
+      <Divider mt={'3'} mb={'5'}></Divider>
+      <Stack direction={'column'} spacing={'2'} ml={'20'}>
+        <Text fontSize={'4xl'} fontFamily={golos.style.fontFamily}>
+          🔥Popular
+        </Text>
+        <Carousel data={popular}></Carousel>
+        <Text fontSize={'4xl'} fontFamily={golos.style.fontFamily} mt={'5'}>
+          🆕Recent
+        </Text>
+        <Carousel data={recent}></Carousel>
+      </Stack>
+    </>
+  )
 }

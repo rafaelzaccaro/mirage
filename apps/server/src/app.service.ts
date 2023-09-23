@@ -7,8 +7,10 @@ const prisma = new PrismaClient();
 
 @Injectable()
 export class AppService {
-  async getAllGlimpses(): Promise<Glimpse[]> {
-    return await prisma.glimpse.findMany();
+  async getAllGlimpses(orderBy: string): Promise<Glimpse[]> {
+    return orderBy == 'popular'
+      ? await prisma.glimpse.findMany({ orderBy: { accessCount: 'desc' } })
+      : await prisma.glimpse.findMany({ orderBy: { createdAt: 'desc' } });
   }
   async getGlimpse(id: string): Promise<Glimpse> {
     return await prisma.glimpse.findUniqueOrThrow({ where: { id } });
