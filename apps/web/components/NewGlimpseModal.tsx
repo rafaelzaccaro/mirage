@@ -19,12 +19,13 @@ import {
   useDisclosure,
 } from '@chakra-ui/react'
 import { AddIcon } from '@chakra-ui/icons'
-import React from 'react'
+import React, { ChangeEvent } from 'react'
+import { ImagePicker } from './ImagePicker'
 
 export function NewGlimpseModal() {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [value, setValue] = React.useState('')
-  const handleChange = (event: any) =>
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) =>
     setValue(event.target.value.replace(/ /g, '-'))
   return (
     <>
@@ -41,7 +42,7 @@ export function NewGlimpseModal() {
         bottom={'20px'}
         right={'30px'}
       />
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal isOpen={isOpen} onClose={onClose} size={'2xl'}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader display={'flex'} justifyContent={'center'}>
@@ -49,7 +50,7 @@ export function NewGlimpseModal() {
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Stack direction={'row'}>
+            <Stack direction={'row'} spacing={'10'}>
               <Stack direction={'column'}>
                 <Text>Slug:</Text>
                 <InputGroup mb={'5'}>
@@ -69,6 +70,7 @@ export function NewGlimpseModal() {
               </Stack>
               <Stack direction={'column'}>
                 <Text>Thumb</Text>
+                <ImagePicker />
               </Stack>
             </Stack>
           </ModalBody>
