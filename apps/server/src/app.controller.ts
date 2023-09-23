@@ -13,7 +13,7 @@ export class AppController {
     return await this.appService.getAllGlimpses();
   }
   @Get('glimpse/:id')
-  async getGlimpse(@Param('id') id: string): Promise<any> {
+  async getGlimpse(@Param('id') id: string): Promise<Glimpse> {
     return await this.appService.getGlimpse(id);
   }
   @Post('new')
