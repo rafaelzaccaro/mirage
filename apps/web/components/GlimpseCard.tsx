@@ -41,7 +41,7 @@ export function GlimpseCard({
             <Heading size="md" fontFamily={golos.style.fontFamily}>
               {slug}
             </Heading>
-            {secret ? <LockIcon></LockIcon> : <UnlockIcon></UnlockIcon>}
+            {secret ? <LockIcon /> : <UnlockIcon />}
           </Stack>
           <ReactQuill
             value={content}

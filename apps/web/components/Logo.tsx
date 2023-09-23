@@ -12,7 +12,7 @@ export function Logo() {
         mt={'3'}
         mb={'3'}
         className={useColorModeValue('', 'invert')}
-      ></Image>
+      />
     </Center>
   )
 }

@@ -13,12 +13,12 @@ interface props {
   data: Glimpse[]
 }
 
-export const Carousel: React.FC<props> = (data: props) => {
+export const Carousel: React.FC<props> = (glimpses: props) => {
   const [emblaRef] = useEmblaCarousel()
   return (
     <div className="embla" ref={emblaRef}>
       <Stack direction={'row'} spacing={'3'} className="embla__container">
-        {data.data.map((glimpse: Glimpse) => {
+        {glimpses.data.map((glimpse: Glimpse) => {
           return (
             <GlimpseCard
               key={glimpse.id}
