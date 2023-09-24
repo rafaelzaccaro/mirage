@@ -20,7 +20,7 @@ export default async function Home() {
 
   return (
     <>
-      <Box bg={'blackAlpha.900'}>
+      <Box bg={'#080810'}>
         <Logo />
       </Box>
       <Divider mt={'3'} mb={'5'} />

@@ -61,9 +61,9 @@ export function NewGlimpseModal() {
       <IconButton
         onClick={onOpen}
         isRound
-        color={'white'}
-        bg="green"
-        _dark={{ bg: 'green' }}
+        color={'black'}
+        bg="#8588ad"
+        _dark={{ bg: '#8588ad' }}
         aria-label="new"
         fontSize={'20px'}
         icon={<AddIcon />}
@@ -73,7 +73,7 @@ export function NewGlimpseModal() {
       />
       <Modal isOpen={isOpen} onClose={onClose} size={'2xl'}>
         <ModalOverlay />
-        <ModalContent bg={'gray.900'}>
+        <ModalContent bg={'#222226'}>
           <ModalHeader display={'flex'} justifyContent={'center'}>
             Create new Glimpse✨
           </ModalHeader>
@@ -104,6 +104,7 @@ export function NewGlimpseModal() {
                   defaultChecked
                   isChecked={publicValue}
                   onChange={handlePublicChange}
+                  colorScheme="purple"
                 >
                   Public?
                 </Checkbox>
@@ -120,7 +121,14 @@ export function NewGlimpseModal() {
           </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme="green" mr={3} onClick={test}>
+            <Button
+              variant="solid"
+              color={'black'}
+              bg="#8588ad"
+              _dark={{ bg: '#8588ad' }}
+              mr={3}
+              onClick={test}
+            >
               Create
             </Button>
             <Button variant="ghost" onClick={onClose}>

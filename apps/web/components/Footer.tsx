@@ -12,7 +12,7 @@ export function Footer() {
   return (
     <>
       <Divider my={'5'} />
-      <Box bg={'blackAlpha.900'}>
+      <Box bg={'#080810'}>
         <Stack
           direction={'row'}
           pb={'5'}

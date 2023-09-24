@@ -11,14 +11,33 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 36, 36, 36;
+    /** CSS DARK THEME PRIMARY COLORS */ 
+    --color-primary-100:  #24356e;
+    --color-primary-200:  #3e487d;
+    --color-primary-300:  #565d8d;
+    --color-primary-400:  #6d729d;
+    --color-primary-500:  #8588ad;
+    --color-primary-600:  #9c9fbd;
+    /** CSS DARK THEME SURFACE COLORS */
+    --color-surface-100:  #000000;
+    --color-surface-200:  #1e1e1e;
+    --color-surface-300:  #353535;
+    --color-surface-400:  #4e4e4e;
+    --color-surface-500:  #696969;
+    --color-surface-600:  #858585;
+    /** CSS DARK THEME MIXED SURFACE COLORS */
+    --color-surface-mixed-100:  #080810;
+    --color-surface-mixed-200:  #222226;
+    --color-surface-mixed-300:  #39393d;
+    --color-surface-mixed-400:  #525256;
+    --color-surface-mixed-500:  #6c6c70;
+    --color-surface-mixed-600:  #88888a;
   }
 }
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: rgb(var(--background-start-rgb));
+  background: var(--color-surface-mixed-100);
 }
 
 .invert {
@@ -34,4 +53,5 @@ body {
 .embla__slide {
   flex: 0 0 100%;
   min-width: 0;
+  background-color: var(--color-surface-mixed-200);
 }
