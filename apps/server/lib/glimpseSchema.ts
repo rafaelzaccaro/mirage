@@ -10,21 +10,13 @@ export const glimpseCreationSchema = z.object({
     .string()
     .transform((t) => Boolean(t))
     .pipe(z.boolean()),
-  thumb: z.any(),
+  thumb: z.any().optional(),
 });
 
 export const glimpseEditionSchema = z.object({
   id: z.string(),
-  slug: z.string(),
-  content: z.string(),
-  lifetime: z.dateString(),
-  secret: z.string().optional(),
-  accessCount: z.number().positive().finite(),
-  isPublic: z
-    .string()
-    .transform((t) => Boolean(t))
-    .pipe(z.boolean()),
-  thumb: z.any(),
+  content: z.string().optional(),
+  accessCount: z.number().optional(),
 });
 
 export class glimpseCreationDto extends createZodDto(glimpseCreationSchema) {}

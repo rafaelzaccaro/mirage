@@ -9,7 +9,7 @@ export interface Glimpse {
    */
   content: string;
   /**
-   * Remaining time before the Glimpse is deleted.
+   * Date of when the Glimpse will be deleted.
    */
   lifetime: Date;
   /**

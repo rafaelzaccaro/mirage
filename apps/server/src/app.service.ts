@@ -43,27 +43,19 @@ export class AppService {
     });
   }
   async editGlimpse(glimpse: glimpseEditionDto): Promise<void> {
-    const {
-      id,
-      slug,
-      content,
-      lifetime,
-      accessCount,
-      isPublic,
-      secret,
-      thumb,
-    } = glimpseEditionSchema.parse(glimpse);
-    const filePath = await saveImage(thumb.filename, slug, thumb.data);
-    await prisma.glimpse.update({
-      where: { id },
-      data: {
-        content,
-        lifetime,
-        accessCount,
-        isPublic,
-        secret,
-        thumb: filePath,
-      },
-    });
+    const { id, content, accessCount } = glimpseEditionSchema.parse(glimpse);
+    if (content) {
+      await prisma.glimpse.update({
+        where: { id },
+        data: {
+          content,
+        },
+      });
+    } else if (accessCount) {
+      await prisma.glimpse.update({
+        where: { id },
+        data: { accessCount: accessCount + 1 },
+      });
+    }
   }
 }
