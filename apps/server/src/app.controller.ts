@@ -21,9 +21,9 @@ export class AppController {
   async getAllGlimpses(@Param('orderBy') orderBy: string): Promise<Glimpse[]> {
     return await this.appService.getAllGlimpses(orderBy);
   }
-  @Get('glimpse/:id')
-  async getGlimpse(@Param('id') id: string): Promise<Glimpse> {
-    return await this.appService.getGlimpse(id);
+  @Get('glimpse/:slug')
+  async getGlimpse(@Param('slug') slug: string): Promise<Glimpse> {
+    return await this.appService.getGlimpse(slug);
   }
   @Post('new')
   @UseZodGuard('body', glimpseCreationDto)

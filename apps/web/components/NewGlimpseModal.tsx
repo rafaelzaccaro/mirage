@@ -35,7 +35,7 @@ export function NewGlimpseModal() {
     setSecretValue(event.target.value)
   const handlePublicChange = (event: ChangeEvent<any>) =>
     setPublicValue(event.target.isChecked)
-  async function test() {
+  async function createGlimpse() {
     const d = new Date()
     d.setDate(d.getDate() + 1)
     const formData = new FormData()
@@ -43,17 +43,17 @@ export function NewGlimpseModal() {
     formData.append('content', '<p>This is a brand new <em>Glimpse</em>✨</p>')
     formData.append('lifetime', d.toISOString())
     formData.append('secret', secretValue)
-    formData.append('isPublic', publicValue.toString())
+    formData.append('isPublic', publicValue ? publicValue.toString() : 'false')
     if (fileValue && fileValue.length > 0)
       formData.append('thumb', fileValue[0])
-    const a = await fetch('http://localhost:7777/new', {
+    const res = await fetch('http://localhost:7777/new', {
       method: 'post',
       body: formData,
     })
-    if (a.status == 400) setError((await a.json()).message)
+    if (res.status == 400) setError((await res.json()).message)
     else {
       onClose()
-      window.location.reload()
+      window.location.href = `http://localhost:3000/${slugValue}`
     }
   }
   return (
@@ -127,7 +127,7 @@ export function NewGlimpseModal() {
               bg="#8588ad"
               _dark={{ bg: '#8588ad' }}
               mr={3}
-              onClick={test}
+              onClick={createGlimpse}
             >
               Create
             </Button>

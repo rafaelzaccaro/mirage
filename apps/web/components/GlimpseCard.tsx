@@ -24,12 +24,7 @@ export function GlimpseCard({
   className,
 }: GlimpseCardProps) {
   return (
-    <Card
-      minW="200px"
-      maxW="350px"
-      // background={'whiteAlpha.100'}
-      className={className}
-    >
+    <Card minW="200px" maxW="350px" className={className}>
       <Link as={NextLink} href={'/' + slug} style={{ textDecoration: 'none' }}>
         <CardBody>
           <Image

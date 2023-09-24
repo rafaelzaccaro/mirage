@@ -8,7 +8,7 @@ export const glimpseCreationSchema = z.object({
   secret: z.string().optional(),
   isPublic: z
     .string()
-    .transform((t) => Boolean(t))
+    .transform((b) => (b == 'true' ? true : false))
     .pipe(z.boolean()),
   thumb: z.any().optional(),
 });

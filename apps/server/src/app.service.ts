@@ -15,11 +15,21 @@ const prisma = new PrismaClient();
 export class AppService {
   async getAllGlimpses(orderBy: string): Promise<Glimpse[]> {
     return orderBy == 'popular'
-      ? await prisma.glimpse.findMany({ orderBy: { accessCount: 'desc' } })
-      : await prisma.glimpse.findMany({ orderBy: { createdAt: 'desc' } });
+      ? await prisma.glimpse.findMany({
+          where: {
+            isPublic: true,
+          },
+          orderBy: { accessCount: 'desc' },
+        })
+      : await prisma.glimpse.findMany({
+          where: {
+            isPublic: true,
+          },
+          orderBy: { createdAt: 'desc' },
+        });
   }
-  async getGlimpse(id: string): Promise<Glimpse> {
-    return await prisma.glimpse.findUniqueOrThrow({ where: { id } });
+  async getGlimpse(slug: string): Promise<Glimpse> {
+    return await prisma.glimpse.findUniqueOrThrow({ where: { slug } });
   }
   async createNewGlimpse(
     glimpse: glimpseCreationDto,
