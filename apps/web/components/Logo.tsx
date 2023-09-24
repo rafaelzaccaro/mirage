@@ -2,15 +2,19 @@
 
 import { Center, Image, useColorModeValue } from '@chakra-ui/react'
 
-export function Logo() {
+interface props {
+  size?: string
+}
+
+export function Logo({ size }: props) {
   return (
     <Center>
       <Image
         src="/logo.svg"
         alt="logo"
-        boxSize={'auto'}
-        mt={'3'}
-        mb={'3'}
+        boxSize={size ? size : '30%'}
+        mt={'5'}
+        mb={'5'}
         className={useColorModeValue('', 'invert')}
       />
     </Center>

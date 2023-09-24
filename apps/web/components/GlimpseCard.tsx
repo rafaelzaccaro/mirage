@@ -1,10 +1,10 @@
 'use client'
 
-import { Card, Image, CardBody, Stack, Heading } from '@chakra-ui/react'
+import { Card, Image, CardBody, Stack, Heading, Link } from '@chakra-ui/react'
 import { LockIcon, UnlockIcon } from '@chakra-ui/icons'
 import dynamic from 'next/dynamic'
 import { golos } from '@web/app/theme'
-import Link from 'next/link'
+import NextLink from 'next/link'
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false })
 
 interface GlimpseCardProps {
@@ -24,15 +24,22 @@ export function GlimpseCard({
   className,
 }: GlimpseCardProps) {
   return (
-    <Card maxW="350px" background={'blackAlpha.500'} className={className}>
-      <Link href={'/' + slug}>
+    <Card
+      minW="200px"
+      maxW="350px"
+      background={'whiteAlpha.100'}
+      className={className}
+    >
+      <Link as={NextLink} href={'/' + slug} style={{ textDecoration: 'none' }}>
         <CardBody>
           <Image
             src={thumb}
             alt=""
             borderRadius="md"
-            fit={'scale-down'}
+            objectFit={'cover'}
             maxH={'200px'}
+            minH={'100px'}
+            minW={'100%'}
           />
           <Stack mt="6" spacing="3">
             <Stack

@@ -2,10 +2,14 @@ import { Input, Box } from '@chakra-ui/react'
 import { EditIcon } from '@chakra-ui/icons'
 import { useEffect, useRef, useState } from 'react'
 
-export function ImagePicker() {
+interface props {
+  handleFileChange: (file: FileList) => void
+}
+
+export const ImagePicker: React.FC<props> = (value: props) => {
   const inputFile = useRef<HTMLInputElement | null>(null)
   const [selectedFile, setSelectedFile] = useState()
-  const [preview, setPreview] = useState('string')
+  const [preview, setPreview] = useState<string>()
 
   useEffect(() => {
     if (!selectedFile) {
@@ -24,7 +28,7 @@ export function ImagePicker() {
       setSelectedFile(undefined)
       return
     }
-
+    value.handleFileChange(e.target.files)
     setSelectedFile(e.target.files[0])
   }
 

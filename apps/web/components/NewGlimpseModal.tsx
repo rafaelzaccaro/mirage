@@ -24,9 +24,38 @@ import { ImagePicker } from './ImagePicker'
 
 export function NewGlimpseModal() {
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const [value, setValue] = React.useState('')
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) =>
-    setValue(event.target.value.replace(/ /g, '-'))
+  const [slugValue, setSlugValue] = React.useState('')
+  const [secretValue, setSecretValue] = React.useState('')
+  const [publicValue, setPublicValue] = React.useState(true)
+  const [fileValue, setFileValue] = React.useState<FileList>()
+  const [error, setError] = React.useState<string>()
+  const handleSlugChange = (event: ChangeEvent<HTMLInputElement>) =>
+    setSlugValue(event.target.value.replace(/ /g, '-'))
+  const handleSecretChange = (event: ChangeEvent<HTMLInputElement>) =>
+    setSecretValue(event.target.value)
+  const handlePublicChange = (event: ChangeEvent<any>) =>
+    setPublicValue(event.target.isChecked)
+  async function test() {
+    const d = new Date()
+    d.setDate(d.getDate() + 1)
+    const formData = new FormData()
+    formData.append('slug', slugValue)
+    formData.append('content', '<p>This is a brand new <em>Glimpse</em>✨</p>')
+    formData.append('lifetime', d.toISOString())
+    formData.append('secret', secretValue)
+    formData.append('isPublic', publicValue.toString())
+    if (fileValue && fileValue.length > 0)
+      formData.append('thumb', fileValue[0])
+    const a = await fetch('http://localhost:7777/new', {
+      method: 'post',
+      body: formData,
+    })
+    if (a.status == 400) setError((await a.json()).message)
+    else {
+      onClose()
+      window.location.reload()
+    }
+  }
   return (
     <>
       <IconButton
@@ -44,7 +73,7 @@ export function NewGlimpseModal() {
       />
       <Modal isOpen={isOpen} onClose={onClose} size={'2xl'}>
         <ModalOverlay />
-        <ModalContent>
+        <ModalContent bg={'gray.900'}>
           <ModalHeader display={'flex'} justifyContent={'center'}>
             Create new Glimpse✨
           </ModalHeader>
@@ -53,30 +82,45 @@ export function NewGlimpseModal() {
             <Stack direction={'row'} spacing={'10'}>
               <Stack direction={'column'}>
                 <Text>Slug:</Text>
-                <InputGroup mb={'5'}>
+                <InputGroup>
                   <InputLeftAddon>mirage.com/</InputLeftAddon>
                   <Input
                     placeholder="some-cool-name"
-                    value={value}
-                    onChange={handleChange}
+                    value={slugValue}
+                    onChange={handleSlugChange}
+                    isInvalid={!!error ? true : false}
+                    errorBorderColor="crimson"
                   ></Input>
                 </InputGroup>
-                <Text>Secret:</Text>
+                <Text color={'tomato'}>{error}</Text>
+                <Text mt={'5'}>Secret:</Text>
                 <Input
+                  value={secretValue}
+                  onChange={handleSecretChange}
                   placeholder="Leave blank to let anyone edit"
                   mb={'5'}
                 ></Input>
-                <Checkbox defaultChecked>Public?</Checkbox>
+                <Checkbox
+                  defaultChecked
+                  isChecked={publicValue}
+                  onChange={handlePublicChange}
+                >
+                  Public?
+                </Checkbox>
               </Stack>
               <Stack direction={'column'}>
                 <Text>Thumb</Text>
-                <ImagePicker />
+                <ImagePicker
+                  handleFileChange={(FileList: FileList) =>
+                    setFileValue(FileList)
+                  }
+                />
               </Stack>
             </Stack>
           </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme="green" mr={3} onClick={onClose}>
+            <Button colorScheme="green" mr={3} onClick={test}>
               Create
             </Button>
             <Button variant="ghost" onClick={onClose}>

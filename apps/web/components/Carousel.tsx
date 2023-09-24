@@ -14,7 +14,10 @@ interface props {
 }
 
 export const Carousel: React.FC<props> = (glimpses: props) => {
-  const [emblaRef] = useEmblaCarousel()
+  const [emblaRef] = useEmblaCarousel({
+    dragFree: true,
+    containScroll: 'trimSnaps',
+  })
   return (
     <div className="embla" ref={emblaRef}>
       <Stack direction={'row'} spacing={'3'} className="embla__container">
@@ -26,7 +29,7 @@ export const Carousel: React.FC<props> = (glimpses: props) => {
               content={truncateText(glimpse.content)}
               secret={glimpse.secret}
               lifetime={glimpse.lifetime}
-              thumb={glimpse.thumb}
+              thumb={'http://localhost:7777/' + glimpse.thumb}
               className="embla__slide"
             />
           )

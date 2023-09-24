@@ -1,5 +1,6 @@
 import { Logo } from '@web/components/Logo'
-import { Stack, Divider, Text, useDisclosure } from '@chakra-ui/react'
+import { Footer } from '@web/components/Footer'
+import { Stack, Divider, Text, Box } from '@chakra-ui/react'
 import { golos } from './theme'
 import { Carousel } from '@web/components/Carousel'
 import { Glimpse } from '@web/lib/GlimpseType'
@@ -19,9 +20,11 @@ export default async function Home() {
 
   return (
     <>
-      <Logo />
+      <Box bg={'blackAlpha.900'}>
+        <Logo />
+      </Box>
       <Divider mt={'3'} mb={'5'} />
-      <Stack direction={'column'} spacing={'2'} ml={'20'}>
+      <Stack direction={'column'} spacing={'2'} mx={'20'}>
         <Text fontSize={'4xl'} fontFamily={golos.style.fontFamily}>
           🔥Popular
         </Text>
@@ -32,6 +35,7 @@ export default async function Home() {
         <Carousel data={recent}></Carousel>
       </Stack>
       <NewGlimpseModal />
+      <Footer />
     </>
   )
 }
