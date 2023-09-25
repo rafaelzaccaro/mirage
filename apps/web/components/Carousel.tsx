@@ -29,6 +29,7 @@ export const Carousel: React.FC<props> = (glimpses: props) => {
               content={truncateText(glimpse.content)}
               secret={glimpse.secret}
               lifetime={glimpse.lifetime}
+              createdAt={glimpse.createdAt}
               thumb={'http://localhost:7777/' + glimpse.thumb}
               className="embla__slide"
             />

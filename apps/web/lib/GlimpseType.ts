@@ -6,4 +6,5 @@ export interface Glimpse {
   lifetime: Date
   accessCount: number
   thumb: string
+  createdAt: Date
 }

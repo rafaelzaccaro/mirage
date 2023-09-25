@@ -126,9 +126,7 @@ export const RichTextEditor: React.FC<props> = ({ glimpse }: props) => {
                     Unlock
                   </Button>
                 </Stack>
-                <Text color={'tomato'}>
-                  {showError ? 'test error msg' : ''}
-                </Text>
+                <Text color={'tomato'}>{showError ? 'Incorrect!' : ''}</Text>
               </PopoverBody>
             </PopoverContent>
           </Portal>
