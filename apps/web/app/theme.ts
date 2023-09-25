@@ -39,7 +39,7 @@ const theme = extendTheme({
     Card: {
       baseStyle: (props: StyleFunctionProps) => ({
         container: {
-          bg: mode('blackAlpha.200', '#222226')(props),
+          bg: mode('blackAlpha.200', '#18181b')(props),
         },
       }),
     },

@@ -34,13 +34,14 @@ export class AppService {
   async createNewGlimpse(
     glimpse: glimpseCreationDto,
   ): Promise<Glimpse | Error> {
+    let filePath: string | undefined;
     const { slug, content, lifetime, isPublic, secret, thumb } =
       glimpseCreationSchema.parse(glimpse);
     const g = await prisma.glimpse.findUnique({ where: { slug } });
 
     if (g) return Error();
 
-    const filePath = await saveImage(thumb.filename, slug, thumb.data);
+    if (thumb) filePath = await saveImage(thumb.filename, slug, thumb.data);
     return await prisma.glimpse.create({
       data: {
         slug,

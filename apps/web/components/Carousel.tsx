@@ -5,8 +5,14 @@ import { GlimpseCard } from './GlimpseCard'
 import useEmblaCarousel from 'embla-carousel-react'
 import { Glimpse } from '@web/lib/GlimpseType'
 
-function truncateText(text: string): string {
-  return text.length > 255 ? text.substring(0, 255) + '...' : text
+function truncateText(text: string, hasImg: boolean): string {
+  return hasImg
+    ? text.length > 255
+      ? text.substring(0, 255) + '...'
+      : text
+    : text.length > 512
+    ? text.substring(0, 512) + '...'
+    : text
 }
 
 interface props {
@@ -26,11 +32,15 @@ export const Carousel: React.FC<props> = (glimpses: props) => {
             <GlimpseCard
               key={glimpse.id}
               slug={glimpse.slug}
-              content={truncateText(glimpse.content)}
+              content={truncateText(glimpse.content, !!glimpse.thumb)}
               secret={glimpse.secret}
               lifetime={glimpse.lifetime}
               createdAt={glimpse.createdAt}
-              thumb={'http://localhost:7777/' + glimpse.thumb}
+              thumb={
+                glimpse.thumb
+                  ? 'http://localhost:7777/' + glimpse.thumb
+                  : glimpse.thumb
+              }
               className="embla__slide"
             />
           )

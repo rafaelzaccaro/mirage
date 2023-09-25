@@ -50,6 +50,7 @@ export const RichTextEditor: React.FC<props> = ({ glimpse }: props) => {
                 fetch('http://localhost:7777/edit', {
                   method: 'put',
                   body: formData,
+                  cache: 'no-store',
                 }),
                 {
                   success: {
@@ -113,7 +114,6 @@ export const RichTextEditor: React.FC<props> = ({ glimpse }: props) => {
                           setAccess(correct)
                           setCookie(glimpse.id, correct)
                           if (closeRef.current) closeRef.current.click()
-                          window.location.reload()
                         }
                       }}
                     >
@@ -128,6 +128,7 @@ export const RichTextEditor: React.FC<props> = ({ glimpse }: props) => {
         )}
       </Stack>
       <ReactQuill
+        defaultValue={glimpse.content}
         value={textValue}
         onChange={setTextValue}
         modules={{ toolbar: access }}
