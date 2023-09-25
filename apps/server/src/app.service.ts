@@ -68,4 +68,12 @@ export class AppService {
       });
     }
   }
+
+  async deleteExpiredGlimpses() {
+    await prisma.glimpse.deleteMany({
+      where: {
+        lifetime: { lte: new Date() },
+      },
+    });
+  }
 }

@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpException,
   HttpStatus,
@@ -39,5 +40,9 @@ export class AppController {
   @UseZodGuard('body', glimpseEditionDto)
   async editGlimpse(@Body() glimpse: glimpseEditionDto): Promise<void> {
     await this.appService.editGlimpse(glimpse);
+  }
+  @Delete('deleteExpired')
+  async deleteExpiredGlimpses() {
+    await this.appService.deleteExpiredGlimpses();
   }
 }

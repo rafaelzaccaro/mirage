@@ -8,11 +8,10 @@ import {
   Heading,
   Link,
   CircularProgress,
-  CircularProgressLabel,
+  useColorModeValue,
 } from '@chakra-ui/react'
 import { LockIcon, UnlockIcon } from '@chakra-ui/icons'
 import dynamic from 'next/dynamic'
-import { golos } from '@web/app/theme'
 import { getPercentage } from '@web/lib/parseLifetime'
 import NextLink from 'next/link'
 import { useEffect, useState } from 'react'
@@ -39,6 +38,14 @@ export function GlimpseCard({
 }: GlimpseCardProps) {
   const [lifetimePercentage, setLifetimePercentage] = useState<number>(
     getPercentage(createdAt, lifetime),
+  )
+  const circularProgressColor = useColorModeValue(
+    'blackAlpha.900',
+    'whiteAlpha.800',
+  )
+  const circularProgressTrackColor = useColorModeValue(
+    'whiteAlpha.400',
+    'blackAlpha.400',
   )
   useEffect(() => {
     const interval = setInterval(
@@ -70,23 +77,23 @@ export function GlimpseCard({
               justifyContent={'space-between'}
               alignItems={'center'}
             >
-              <Heading size="md" fontFamily={golos.style.fontFamily}>
-                {slug}
-              </Heading>
+              <Heading size="md">{slug}</Heading>
               {secret ? <LockIcon /> : <UnlockIcon />}
             </Stack>
             <ReactQuill
               value={content}
               modules={{ toolbar: false }}
+              theme=""
+              style={{ fontFamily: `"Golos Text"` }}
               readOnly
-            ></ReactQuill>
+            />
           </Stack>
         </CardBody>
         <CircularProgress
           value={lifetimePercentage}
           size={'30px'}
-          trackColor={'blackAlpha.400'}
-          color="whiteAlpha.800"
+          trackColor={circularProgressTrackColor}
+          color={circularProgressColor}
           pos={'absolute'}
           top={'10px'}
           right={'10px'}

@@ -1,7 +1,7 @@
 import './globals.css'
 import type { Metadata } from 'next'
 import { ColorModeScript } from '@chakra-ui/react'
-import theme, { golos } from './theme'
+import theme from './theme'
 import { Providers } from './providers'
 
 export const metadata: Metadata = {
@@ -15,11 +15,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={golos.className}>
-        <ColorModeScript
-          initialColorMode={theme.config.initialColorMode}
-        ></ColorModeScript>
-        <Providers>{children}</Providers>
+      <body>
+        <Providers>
+          <ColorModeScript initialColorMode={theme.config.initialColorMode} />
+          {children}
+        </Providers>
       </body>
     </html>
   )

@@ -39,98 +39,93 @@ export const RichTextEditor: React.FC<props> = ({ glimpse }: props) => {
   return (
     <>
       <Stack>
-        <IconButton
-          onClick={async () => {
-            const formData = new FormData()
-            formData.append('id', glimpse.id)
-            formData.append('content', textValue)
+        {access ? (
+          <IconButton
+            onClick={async () => {
+              const formData = new FormData()
+              formData.append('id', glimpse.id)
+              formData.append('content', textValue)
 
-            toast.promise(
-              fetch('http://localhost:7777/edit', {
-                method: 'put',
-                body: formData,
-              }),
-              {
-                success: {
-                  title: 'Success!',
-                  description: 'Glimpse successfully updated.',
-                  duration: 9000,
-                  isClosable: true,
+              toast.promise(
+                fetch('http://localhost:7777/edit', {
+                  method: 'put',
+                  body: formData,
+                }),
+                {
+                  success: {
+                    title: 'Success!',
+                    description: 'Glimpse successfully updated.',
+                    duration: 9000,
+                    isClosable: true,
+                  },
+                  error: {
+                    title: 'Oops!',
+                    description: 'Something went wrong.',
+                    duration: 9000,
+                    isClosable: true,
+                  },
+                  loading: { title: 'Pending...' },
                 },
-                error: {
-                  title: 'Oops!',
-                  description: 'Something went wrong.',
-                  duration: 9000,
-                  isClosable: true,
-                },
-                loading: { title: 'Pending...' },
-              },
-            )
-          }}
-          isRound
-          color={'black'}
-          bg="#8588ad"
-          _dark={{ bg: '#8588ad' }}
-          aria-label="new"
-          fontSize={'20px'}
-          icon={<CheckIcon />}
-          pos={'fixed'}
-          bottom={'20px'}
-          right={'30px'}
-        />
-        <Popover>
-          <PopoverTrigger>
-            <IconButton
-              isRound
-              color={'black'}
-              bg="#8588ad"
-              _dark={{ bg: '#8588ad' }}
-              aria-label="secret"
-              fontSize={'20px'}
-              icon={<LockIcon />}
-              pos={'fixed'}
-              bottom={'20px'}
-              right={'90px'}
-              hidden={access}
-              display={access ? 'none' : 'inline-flex'}
-            />
-          </PopoverTrigger>
-          <Portal>
-            <PopoverContent>
-              <PopoverArrow />
-              <PopoverHeader>Secret 🤫</PopoverHeader>
-              <PopoverCloseButton ref={closeRef} />
-              <PopoverBody>
-                <Stack direction={'row'}>
-                  <Input
-                    value={secretGuess}
-                    onChange={(e) => setSecretGuess(e.target.value)}
-                    isInvalid={showError}
-                    errorBorderColor="crimson"
-                  ></Input>
-                  <Button
-                    color={'black'}
-                    bg="#8588ad"
-                    _dark={{ bg: '#8588ad' }}
-                    onClick={() => {
-                      let correct = secretGuess == glimpse.secret
-                      setShowError(!correct)
-                      if (correct) {
-                        setAccess(correct)
-                        setCookie(glimpse.id, correct)
-                        if (closeRef.current) closeRef.current.click()
-                        window.location.reload()
-                      }
-                    }}
-                  >
-                    Unlock
-                  </Button>
-                </Stack>
-                <Text color={'tomato'}>{showError ? 'Incorrect!' : ''}</Text>
-              </PopoverBody>
-            </PopoverContent>
-          </Portal>
-        </Popover>
+              )
+            }}
+            isRound
+            colorScheme="white"
+            aria-label="new"
+            fontSize={'20px'}
+            icon={<CheckIcon />}
+            pos={'fixed'}
+            bottom={'20px'}
+            right={'30px'}
+          />
+        ) : (
+          <Popover>
+            <PopoverTrigger>
+              <IconButton
+                isRound
+                colorScheme="white"
+                aria-label="secret"
+                fontSize={'20px'}
+                icon={<LockIcon />}
+                pos={'fixed'}
+                bottom={'20px'}
+                right={'30px'}
+              />
+            </PopoverTrigger>
+            <Portal>
+              <PopoverContent>
+                <PopoverArrow />
+                <PopoverHeader>Secret 🤫</PopoverHeader>
+                <PopoverCloseButton ref={closeRef} />
+                <PopoverBody>
+                  <Stack direction={'row'}>
+                    <Input
+                      value={secretGuess}
+                      onChange={(e) => setSecretGuess(e.target.value)}
+                      isInvalid={showError}
+                      errorBorderColor="crimson"
+                    ></Input>
+                    <Button
+                      colorScheme="gray"
+                      onClick={() => {
+                        let correct = secretGuess == glimpse.secret
+                        setShowError(!correct)
+                        if (correct) {
+                          setAccess(correct)
+                          setCookie(glimpse.id, correct)
+                          if (closeRef.current) closeRef.current.click()
+                          window.location.reload()
+                        }
+                      }}
+                    >
+                      Unlock
+                    </Button>
+                  </Stack>
+                  <Text color={'tomato'}>{showError ? 'Incorrect!' : ''}</Text>
+                </PopoverBody>
+              </PopoverContent>
+            </Portal>
+          </Popover>
+        )}
       </Stack>
       <ReactQuill
         value={textValue}

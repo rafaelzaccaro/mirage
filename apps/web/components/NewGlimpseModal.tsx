@@ -30,30 +30,42 @@ export function NewGlimpseModal() {
   const [fileValue, setFileValue] = React.useState<FileList>()
   const [error, setError] = React.useState<string>()
   const handleSlugChange = (event: ChangeEvent<HTMLInputElement>) =>
-    setSlugValue(event.target.value.replace(/ /g, '-'))
+    setSlugValue(event.target.value.toLowerCase().replace(/ /g, '-'))
   const handleSecretChange = (event: ChangeEvent<HTMLInputElement>) =>
     setSecretValue(event.target.value)
   const handlePublicChange = (event: ChangeEvent<any>) =>
     setPublicValue(event.target.isChecked)
   async function createGlimpse() {
-    const d = new Date()
-    d.setDate(d.getDate() + 1)
-    const formData = new FormData()
-    formData.append('slug', slugValue)
-    formData.append('content', '<p>This is a brand new <em>Glimpse</em>✨</p>')
-    formData.append('lifetime', d.toISOString())
-    formData.append('secret', secretValue)
-    formData.append('isPublic', publicValue ? publicValue.toString() : 'false')
-    if (fileValue && fileValue.length > 0)
-      formData.append('thumb', fileValue[0])
-    const res = await fetch('http://localhost:7777/new', {
-      method: 'post',
-      body: formData,
-    })
-    if (res.status == 400) setError((await res.json()).message)
-    else {
-      onClose()
-      window.location.href = `http://localhost:3000/${slugValue}`
+    if (!slugValue) {
+      setError('Cannot be empty!')
+    } else if (!/^[a-z0-9\-]+$/.test(slugValue)) {
+      setError('Cannot contain special characters, except dashes')
+    } else {
+      const d = new Date()
+      d.setDate(d.getDate() + 1)
+      const formData = new FormData()
+      formData.append('slug', slugValue)
+      formData.append(
+        'content',
+        '<p>This is a brand new <em>Glimpse</em>✨</p>',
+      )
+      formData.append('lifetime', d.toISOString())
+      formData.append('secret', secretValue)
+      formData.append(
+        'isPublic',
+        publicValue ? publicValue.toString() : 'false',
+      )
+      if (fileValue && fileValue.length > 0)
+        formData.append('thumb', fileValue[0])
+      const res = await fetch('http://localhost:7777/new', {
+        method: 'post',
+        body: formData,
+      })
+      if (res.status == 400) setError((await res.json()).message)
+      else {
+        onClose()
+        window.location.href = `http://localhost:3000/${slugValue}`
+      }
     }
   }
   return (
@@ -61,9 +73,7 @@ export function NewGlimpseModal() {
       <IconButton
         onClick={onOpen}
         isRound
-        color={'black'}
-        bg="#8588ad"
-        _dark={{ bg: '#8588ad' }}
+        colorScheme="white"
         aria-label="new"
         fontSize={'20px'}
         icon={<AddIcon />}
@@ -73,7 +83,7 @@ export function NewGlimpseModal() {
       />
       <Modal isOpen={isOpen} onClose={onClose} size={'2xl'}>
         <ModalOverlay />
-        <ModalContent bg={'#222226'}>
+        <ModalContent>
           <ModalHeader display={'flex'} justifyContent={'center'}>
             Create new Glimpse✨
           </ModalHeader>
@@ -104,7 +114,7 @@ export function NewGlimpseModal() {
                   defaultChecked
                   isChecked={publicValue}
                   onChange={handlePublicChange}
-                  colorScheme="purple"
+                  colorScheme="white"
                 >
                   Public?
                 </Checkbox>
@@ -120,18 +130,16 @@ export function NewGlimpseModal() {
             </Stack>
           </ModalBody>
 
-          <ModalFooter>
+          <ModalFooter mr={'6'}>
             <Button
               variant="solid"
-              color={'black'}
-              bg="#8588ad"
-              _dark={{ bg: '#8588ad' }}
+              colorScheme="gray"
               mr={3}
               onClick={createGlimpse}
             >
               Create
             </Button>
-            <Button variant="ghost" onClick={onClose}>
+            <Button variant="ghost" colorScheme="red" onClick={onClose}>
               Discard
             </Button>
           </ModalFooter>
