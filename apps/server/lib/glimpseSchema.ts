@@ -16,7 +16,7 @@ export const glimpseCreationSchema = z.object({
 export const glimpseEditionSchema = z.object({
   id: z.string(),
   content: z.string().optional(),
-  accessCount: z.number().optional(),
+  accessCount: z.coerce.number().optional(),
 });
 
 export class glimpseCreationDto extends createZodDto(glimpseCreationSchema) {}

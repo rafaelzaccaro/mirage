@@ -4,5 +4,6 @@ export interface Glimpse {
   content: string
   secret: string | null
   lifetime: Date
+  accessCount: number
   thumb: string
 }
