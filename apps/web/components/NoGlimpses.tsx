@@ -1,6 +1,6 @@
 'use client'
 
-import { Center, Text, useColorModeValue } from '@chakra-ui/react'
+import { Center, Highlight, useColorModeValue } from '@chakra-ui/react'
 
 export function NoGlimpses() {
   const fadedColor = useColorModeValue('blackAlpha.400', 'whiteAlpha.400')
@@ -13,11 +13,9 @@ export function NoGlimpses() {
         fontStyle={'italic'}
         color={textColor}
       >
-        All Glimpses have&nbsp;
-        <Text fontSize={'3xl'} fontStyle={'italic'} color={fadedColor}>
-          faded
-        </Text>
-        ... Why not create a new one?
+        <Highlight query="faded" styles={{ color: fadedColor }}>
+          All Glimpses have&nbsp;faded... Why not create a new one?
+        </Highlight>
       </Center>
     </>
   )

@@ -27,13 +27,24 @@ const theme = extendTheme({
     heading: `"Golos Text"`,
   },
   styles: {
-    global: {
+    global: (props: StyleFunctionProps) => ({
       body: {
         _dark: {
           bg: '#080810',
         },
       },
-    },
+      '::-webkit-scrollbar': {
+        w: '10px',
+      },
+      '::-webkit-scrollbar-track': {
+        // bg: mode('blackAlpha.400', 'whiteAlpha.400')(props),
+        // borderRadius: '10px',
+      },
+      '::-webkit-scrollbar-thumb': {
+        bg: mode('blackAlpha.900', 'whiteAlpha.800')(props),
+        borderRadius: '10px',
+      },
+    }),
   },
   components: {
     Card: {

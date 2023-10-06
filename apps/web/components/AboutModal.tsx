@@ -49,12 +49,12 @@ export function AboutModal() {
               fully fleshed out website, that I decided to create simply out of
               boredom and also because I wanted to learn React, which I think I
               did quite well for my first time. I also experimented with NextJS
-              on the front-end and NestJS on the backend, these two were
+              on the front-end and NestJS on the back-end, these two were
               completely unknown to me and I had a blast learning their quirks,
               how they work and what we can do with them (although they
-              sometimes cause a headache or two). Of course, there is still much
-              to do, but I am happy with its current state for now, and will
-              move on to new projects. I might, though, revisit this in the
+              sometimes can cause a headache or two). Of course, there is still
+              much to do, but I am happy with its current state for now, and
+              will move on to new projects. I might, though, revisit this in the
               future, since I do believe it is an interesting idea.
             </Text>
           </ModalBody>
