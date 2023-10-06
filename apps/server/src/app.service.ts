@@ -83,7 +83,7 @@ export class AppService {
       where: { lifetime: { lte: new Date() } },
     });
 
-    expiredGlimpses.forEach(async (glimpse) => {
+    expiredGlimpses.forEach(async (glimpse: Glimpse) => {
       if (glimpse.thumb) await deleteImage(glimpse.thumb);
     });
 
