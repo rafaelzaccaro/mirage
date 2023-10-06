@@ -19,10 +19,12 @@ import {
   Button,
   Text,
   useToast,
+  useColorModeValue,
 } from '@chakra-ui/react'
 import { CheckIcon, LockIcon } from '@chakra-ui/icons'
 import { Glimpse } from '@web/lib/GlimpseType'
 import { hasCookie, setCookie } from 'cookies-next'
+import { verifySecret } from '@web/lib/hashSecret'
 
 interface props {
   glimpse: Glimpse
@@ -33,6 +35,7 @@ export const RichTextEditor: React.FC<props> = ({ glimpse }: props) => {
   const [secretGuess, setSecretGuess] = useState('')
   const [showError, setShowError] = useState(false)
   const [access, setAccess] = useState(hasCookie(glimpse.id) || !glimpse.secret)
+  const inputFocusBorderColor = useColorModeValue('white.500', 'white.200')
   const closeRef = useRef<HTMLButtonElement | null>(null)
   const toast = useToast()
 
@@ -46,28 +49,32 @@ export const RichTextEditor: React.FC<props> = ({ glimpse }: props) => {
               formData.append('id', glimpse.id)
               formData.append('content', textValue)
 
-              toast.promise(
-                fetch('http://localhost:7777/edit', {
+              const res = await fetch(
+                `${process.env.NEXT_PUBLIC_SERVER_URL}/edit`,
+                {
                   method: 'put',
                   body: formData,
                   cache: 'no-store',
-                }),
-                {
-                  success: {
-                    title: 'Success!',
-                    description: 'Glimpse successfully updated.',
-                    duration: 9000,
-                    isClosable: true,
-                  },
-                  error: {
-                    title: 'Oops!',
-                    description: 'Something went wrong.',
-                    duration: 9000,
-                    isClosable: true,
-                  },
-                  loading: { title: 'Pending...' },
                 },
               )
+
+              if (res.status == 200) {
+                toast({
+                  title: 'Success!',
+                  status: 'success',
+                  description: 'Glimpse successfully updated.',
+                  duration: 9000,
+                  isClosable: true,
+                })
+              } else {
+                toast({
+                  title: 'Oops!',
+                  status: 'error',
+                  description: 'Something went wrong.',
+                  duration: 9000,
+                  isClosable: true,
+                })
+              }
             }}
             isRound
             colorScheme="white"
@@ -104,11 +111,12 @@ export const RichTextEditor: React.FC<props> = ({ glimpse }: props) => {
                       onChange={(e) => setSecretGuess(e.target.value)}
                       isInvalid={showError}
                       errorBorderColor="crimson"
+                      focusBorderColor={inputFocusBorderColor}
                     ></Input>
                     <Button
                       colorScheme="gray"
                       onClick={() => {
-                        let correct = secretGuess == glimpse.secret
+                        let correct = verifySecret(secretGuess, glimpse.secret!)
                         setShowError(!correct)
                         if (correct) {
                           setAccess(correct)

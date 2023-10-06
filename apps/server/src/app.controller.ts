@@ -24,7 +24,10 @@ export class AppController {
   }
   @Get('glimpse/:slug')
   async getGlimpse(@Param('slug') slug: string): Promise<Glimpse> {
-    return await this.appService.getGlimpse(slug);
+    const res = await this.appService.getGlimpse(slug);
+    if (res instanceof Error)
+      throw new HttpException('Glimpse not found', HttpStatus.NOT_FOUND);
+    else return res;
   }
   @Post('new')
   @UseZodGuard('body', glimpseCreationDto)
@@ -39,7 +42,9 @@ export class AppController {
   @Put('edit')
   @UseZodGuard('body', glimpseEditionDto)
   async editGlimpse(@Body() glimpse: glimpseEditionDto): Promise<void> {
-    await this.appService.editGlimpse(glimpse);
+    const res = await this.appService.editGlimpse(glimpse);
+    if (res instanceof Error)
+      throw new HttpException('Glimpse not found', HttpStatus.NOT_FOUND);
   }
   @Delete('deleteExpired')
   async deleteExpiredGlimpses() {

@@ -30,3 +30,11 @@
   font-family: "Golos Text" !important;
   font-size: 16px !important;
 }
+
+.rte-stroke-color {
+  stroke: var(--charka-colors-chakra-body-text) !important;
+}
+
+.rte-font-color {
+  color: var(--charka-colors-chakra-body-text) !important;
+}

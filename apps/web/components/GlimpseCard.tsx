@@ -10,10 +10,11 @@ import {
   useColorModeValue,
   LinkBox,
   LinkOverlay,
+  Tooltip,
 } from '@chakra-ui/react'
 import { LockIcon, UnlockIcon } from '@chakra-ui/icons'
 import dynamic from 'next/dynamic'
-import { getPercentage } from '@web/lib/parseLifetime'
+import { getPercentage, getRemainingDuration } from '@web/lib/parseLifetime'
 import { useEffect, useState } from 'react'
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false })
 
@@ -39,6 +40,9 @@ export function GlimpseCard({
   const [lifetimePercentage, setLifetimePercentage] = useState<number>(
     getPercentage(createdAt, lifetime),
   )
+  const [remainingDuration, setRemainingDuration] = useState<string>(
+    getRemainingDuration(lifetime),
+  )
   const circularProgressColor = useColorModeValue(
     'blackAlpha.900',
     'whiteAlpha.800',
@@ -47,13 +51,19 @@ export function GlimpseCard({
     'whiteAlpha.400',
     'blackAlpha.400',
   )
+  const tooltipBgColor = useColorModeValue('white.500', 'white.200')
   useEffect(() => {
-    const interval = setInterval(
+    const percentInterval = setInterval(
       () => setLifetimePercentage(getPercentage(createdAt, lifetime)),
       3600000,
     )
+    const durationInterval = setInterval(
+      () => setRemainingDuration(getRemainingDuration(lifetime)),
+      1000,
+    )
     return () => {
-      clearInterval(interval)
+      clearInterval(percentInterval)
+      clearInterval(durationInterval)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -93,16 +103,18 @@ export function GlimpseCard({
             />
           </Stack>
         </CardBody>
-        <CircularProgress
-          value={lifetimePercentage}
-          size={'30px'}
-          trackColor={circularProgressTrackColor}
-          color={circularProgressColor}
-          pos={'absolute'}
-          bottom={'10px'}
-          right={'10px'}
-          capIsRound
-        />
+        <Tooltip hasArrow bg={tooltipBgColor} label={remainingDuration}>
+          <CircularProgress
+            value={lifetimePercentage}
+            size={'30px'}
+            trackColor={circularProgressTrackColor}
+            color={circularProgressColor}
+            pos={'absolute'}
+            bottom={'10px'}
+            right={'10px'}
+            capIsRound
+          />
+        </Tooltip>
       </LinkOverlay>
     </LinkBox>
   )

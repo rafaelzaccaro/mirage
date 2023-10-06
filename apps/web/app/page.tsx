@@ -8,18 +8,18 @@ import { NoGlimpses } from '@web/components/NoGlimpses'
 
 export default async function Home() {
   const popular: Glimpse[] = await (
-    await fetch('http://localhost:7777/glimpses/popular', {
+    await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/glimpses/popular`, {
       cache: 'no-store',
     })
   ).json()
   const recent: Glimpse[] = await (
-    await fetch('http://localhost:7777/glimpses/recent', {
+    await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/glimpses/recent`, {
       cache: 'no-store',
     })
   ).json()
 
   async function glimpseCleanup() {
-    await fetch('http://localhost:7777/deleteExpired', {
+    await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/deleteExpired`, {
       method: 'delete',
       cache: 'no-store',
     })

@@ -57,7 +57,7 @@ const theme = extendTheme({
     Popover: {
       baseStyle: (props: StyleFunctionProps) => ({
         content: {
-          bg: mode('white', '#222226')(props),
+          bg: mode('gray.50', '#222226')(props),
         },
         header: {
           color: mode('gray.800', 'whiteAlpha.900')(props),

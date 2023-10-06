@@ -38,7 +38,7 @@ export const Carousel: React.FC<props> = (glimpses: props) => {
               createdAt={glimpse.createdAt}
               thumb={
                 glimpse.thumb
-                  ? 'http://localhost:7777/' + glimpse.thumb
+                  ? process.env.NEXT_PUBLIC_SERVER_URL + glimpse.thumb
                   : glimpse.thumb
               }
               className="embla__slide"

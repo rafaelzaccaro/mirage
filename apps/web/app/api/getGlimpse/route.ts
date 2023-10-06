@@ -4,10 +4,13 @@ import { NextRequest, NextResponse } from 'next/server'
 export async function GET(req: NextRequest): Promise<NextResponse> {
   const slug = req.nextUrl.searchParams.get('slug')
   const glimpse: Glimpse = await (
-    await fetch(`http://localhost:7777/glimpse/${slug}`, {
+    await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/glimpse/${slug}`, {
       cache: 'no-store',
     })
   ).json()
+  const res = JSON.stringify(
+    glimpse.id ? { glimpse: glimpse, ip: req.ip } : glimpse,
+  )
 
-  return new NextResponse(JSON.stringify({ glimpse: glimpse, ip: req.ip }))
+  return new NextResponse(res)
 }

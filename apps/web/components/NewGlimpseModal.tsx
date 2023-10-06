@@ -17,18 +17,24 @@ import {
   Checkbox,
   IconButton,
   useDisclosure,
+  useColorModeValue,
+  Tooltip,
 } from '@chakra-ui/react'
-import { AddIcon } from '@chakra-ui/icons'
+import { AddIcon, QuestionOutlineIcon } from '@chakra-ui/icons'
 import React, { ChangeEvent } from 'react'
 import { ImagePicker } from './ImagePicker'
+import { useRouter } from 'next/navigation'
+import { hashSecret } from '@web/lib/hashSecret'
 
 export function NewGlimpseModal() {
+  const { push } = useRouter()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [slugValue, setSlugValue] = React.useState('')
   const [secretValue, setSecretValue] = React.useState('')
   const [publicValue, setPublicValue] = React.useState(true)
   const [fileValue, setFileValue] = React.useState<FileList>()
   const [error, setError] = React.useState<string>()
+  const inputFocusBorderColor = useColorModeValue('white.500', 'white.200')
   const handleSlugChange = (event: ChangeEvent<HTMLInputElement>) =>
     setSlugValue(event.target.value.toLowerCase().replace(/ /g, '-'))
   const handleSecretChange = (event: ChangeEvent<HTMLInputElement>) =>
@@ -50,21 +56,21 @@ export function NewGlimpseModal() {
         '<p>This is a brand new <em>Glimpse</em>✨</p>',
       )
       formData.append('lifetime', d.toISOString())
-      formData.append('secret', secretValue)
+      formData.append('secret', hashSecret(secretValue))
       formData.append(
         'isPublic',
         publicValue ? publicValue.toString() : 'false',
       )
       if (fileValue && fileValue.length > 0)
         formData.append('thumb', fileValue[0])
-      const res = await fetch('http://localhost:7777/new', {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/new`, {
         method: 'post',
         body: formData,
       })
       if (res.status == 400) setError((await res.json()).message)
       else {
         onClose()
-        window.location.href = `http://localhost:3000/${slugValue}`
+        push(`/${slugValue}`)
       }
     }
   }
@@ -80,6 +86,7 @@ export function NewGlimpseModal() {
         pos={'fixed'}
         bottom={'20px'}
         right={'30px'}
+        zIndex={'2'}
       />
       <Modal isOpen={isOpen} onClose={onClose} size={'2xl'}>
         <ModalOverlay />
@@ -91,7 +98,17 @@ export function NewGlimpseModal() {
           <ModalBody>
             <Stack direction={'row'} spacing={'10'}>
               <Stack direction={'column'}>
-                <Text>Slug:</Text>
+                <Stack direction={'row'} alignItems={'center'}>
+                  <Text>Slug:</Text>
+                  <Tooltip
+                    hasArrow
+                    bg={inputFocusBorderColor}
+                    label="The name of your Glimpse, also the URL for it."
+                    placement="right"
+                  >
+                    <QuestionOutlineIcon />
+                  </Tooltip>
+                </Stack>
                 <InputGroup>
                   <InputLeftAddon>mirage.com/</InputLeftAddon>
                   <Input
@@ -100,27 +117,60 @@ export function NewGlimpseModal() {
                     onChange={handleSlugChange}
                     isInvalid={!!error ? true : false}
                     errorBorderColor="crimson"
+                    focusBorderColor={inputFocusBorderColor}
+                    mb={'5'}
                   ></Input>
                 </InputGroup>
                 <Text color={'tomato'}>{error}</Text>
-                <Text mt={'5'}>Secret:</Text>
+                <Stack direction={'row'} alignItems={'center'}>
+                  <Text>Secret:</Text>
+                  <Tooltip
+                    hasArrow
+                    bg={inputFocusBorderColor}
+                    label="The secret passphrase people will need to be able to edit your Glimpse. Leave empty if you want to let anyone edit."
+                    placement="right"
+                  >
+                    <QuestionOutlineIcon />
+                  </Tooltip>
+                </Stack>
                 <Input
                   value={secretValue}
                   onChange={handleSecretChange}
                   placeholder="Leave blank to let anyone edit"
                   mb={'5'}
+                  focusBorderColor={inputFocusBorderColor}
                 ></Input>
-                <Checkbox
-                  defaultChecked
-                  isChecked={publicValue}
-                  onChange={handlePublicChange}
-                  colorScheme="white"
-                >
-                  Public?
-                </Checkbox>
+                <Stack direction={'row'} alignItems={'center'}>
+                  <Checkbox
+                    defaultChecked
+                    isChecked={publicValue}
+                    onChange={handlePublicChange}
+                    colorScheme="white"
+                  >
+                    Public?
+                  </Checkbox>
+                  <Tooltip
+                    hasArrow
+                    bg={inputFocusBorderColor}
+                    label="Whether your Glimpse will show up on the home page or not. If unchecked, it will only be accessible through URL."
+                    placement="right"
+                  >
+                    <QuestionOutlineIcon />
+                  </Tooltip>
+                </Stack>
               </Stack>
               <Stack direction={'column'}>
-                <Text>Thumb</Text>
+                <Stack direction={'row'} alignItems={'center'}>
+                  <Text>Thumb</Text>
+                  <Tooltip
+                    hasArrow
+                    bg={inputFocusBorderColor}
+                    label="The image used as thumbnail on the home page for your Glimpse."
+                    placement="auto"
+                  >
+                    <QuestionOutlineIcon />
+                  </Tooltip>
+                </Stack>
                 <ImagePicker
                   handleFileChange={(FileList: FileList) =>
                     setFileValue(FileList)
