@@ -15,6 +15,7 @@ import {
   AiFillLinkedin,
 } from 'react-icons/ai'
 import { Logo } from './Logo'
+import { AboutModal } from './AboutModal'
 
 export function Footer() {
   const bgColor = useColorModeValue('#ffffff', '#080810')
@@ -31,8 +32,9 @@ export function Footer() {
           <Stack boxSize={'33%'}>
             <Logo size="35%" />
           </Stack>
-          <Stack boxSize={'33%'} alignItems={'center'}>
+          <Stack boxSize={'33%'} alignItems={'center'} direction={'column'}>
             <Text>© Rafael Zaccaro</Text>
+            <AboutModal />
           </Stack>
           <Stack direction={'row'} boxSize={'33%'} justifyContent={'center'}>
             <IconButton
