@@ -7,7 +7,6 @@ import {
   HttpStatus,
   Param,
   Post,
-  Put,
 } from '@nestjs/common';
 import { AppService } from './app.service';
 import { Glimpse } from '../lib/glimpseType';
@@ -39,7 +38,7 @@ export class AppController {
       throw new HttpException('Slug already exists', HttpStatus.BAD_REQUEST);
     else return res;
   }
-  @Put('edit')
+  @Post('edit')
   @UseZodGuard('body', glimpseEditionDto)
   async editGlimpse(@Body() glimpse: glimpseEditionDto): Promise<void> {
     const res = await this.appService.editGlimpse(glimpse);
