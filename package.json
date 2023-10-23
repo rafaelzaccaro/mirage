@@ -8,5 +8,10 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "pnpm": {
+    "patchedDependencies": {
+      "react-quill@2.0.0": "patches/react-quill@2.0.0.patch"
+    }
+  }
 }
