@@ -52,7 +52,7 @@ export const RichTextEditor: React.FC<props> = ({ glimpse }: props) => {
               const res = await fetch(
                 `${process.env.NEXT_PUBLIC_SERVER_URL}/edit`,
                 {
-                  method: 'put',
+                  method: 'post',
                   body: formData,
                 },
               )

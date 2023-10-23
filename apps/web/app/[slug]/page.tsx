@@ -31,7 +31,7 @@ export default async function Glimpse({
     formData.append('id', res.glimpse.id)
     formData.append('accessCount', (res.glimpse.accessCount + 1).toString())
     await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/edit`, {
-      method: 'put',
+      method: 'post',
       body: formData,
     })
     setCookie('visited', true, { maxAge: 86400 })
