@@ -25,6 +25,7 @@ import React, { ChangeEvent } from 'react'
 import { ImagePicker } from './ImagePicker'
 import { useRouter } from 'next/navigation'
 import { hashSecret } from '@web/lib/hashSecret'
+import { isEmptyStatement } from 'typescript'
 
 export function NewGlimpseModal() {
   const { push } = useRouter()
@@ -56,7 +57,10 @@ export function NewGlimpseModal() {
         '<p>This is a brand new <em>Glimpse</em>✨</p>',
       )
       formData.append('lifetime', d.toISOString())
-      formData.append('secret', hashSecret(secretValue))
+      formData.append(
+        'secret',
+        secretValue != '' ? hashSecret(secretValue) : secretValue,
+      )
       formData.append(
         'isPublic',
         publicValue ? publicValue.toString() : 'false',
