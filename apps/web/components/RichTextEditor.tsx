@@ -121,6 +121,9 @@ export const RichTextEditor: React.FC<props> = ({ glimpse }: props) => {
                           setAccess(correct)
                           setCookie(glimpse.id, correct)
                           if (closeRef.current) closeRef.current.click()
+                          alert(
+                            "Due to a broken module (the one I'm using for the text editor, unfortunately it is out of my control to fix it), please refresh the page for the text editor to reload",
+                          )
                         }
                       }}
                     >
