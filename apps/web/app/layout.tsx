@@ -15,6 +15,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        {/* eslint-disable-next-line @next/next/google-font-display, @next/next/no-page-custom-font*/}
+        <link
+          href="https://fonts.googleapis.com/css?family=Golos Text"
+          rel="stylesheet"
+        />
+      </head>
       <body>
         <Providers>
           <ColorModeScript initialColorMode={theme.config.initialColorMode} />

@@ -4,3 +4,5 @@ build/
 .env
 .todo
 uploads/
+credentials.json
+token.json

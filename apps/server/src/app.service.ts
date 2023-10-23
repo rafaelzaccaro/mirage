@@ -7,7 +7,8 @@ import {
   glimpseCreationDto,
   glimpseEditionDto,
 } from '../lib/glimpseSchema';
-import { deleteImage, saveImage } from '../lib/imageHandling';
+import { getFileURL } from '../lib/imageHandling';
+import { deleteImage } from '../lib/google-api/gdrive';
 
 const prisma = new PrismaClient();
 
@@ -38,14 +39,12 @@ export class AppService {
   async createNewGlimpse(
     glimpse: glimpseCreationDto,
   ): Promise<Glimpse | Error> {
-    let filePath: string | undefined;
     const { slug, content, lifetime, isPublic, secret, thumb } =
       glimpseCreationSchema.parse(glimpse);
     const g = await prisma.glimpse.findUnique({ where: { slug } });
 
     if (g) return Error();
 
-    if (thumb) filePath = await saveImage(thumb.filename, slug, thumb.data);
     return await prisma.glimpse.create({
       data: {
         slug,
@@ -53,7 +52,9 @@ export class AppService {
         lifetime,
         isPublic,
         secret,
-        thumb: filePath,
+        thumb: thumb
+          ? await getFileURL(thumb.data, slug + thumb.filename)
+          : null,
       },
     });
   }
@@ -84,7 +85,8 @@ export class AppService {
     });
 
     expiredGlimpses.forEach(async (glimpse: Glimpse) => {
-      if (glimpse.thumb) await deleteImage(glimpse.thumb);
+      if (glimpse.thumb)
+        await deleteImage(glimpse.thumb.replace(/(?<=id=)(.*?)(?=&)/, '$1'));
     });
 
     await prisma.glimpse.deleteMany({

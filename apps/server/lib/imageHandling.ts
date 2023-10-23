@@ -1,35 +1,10 @@
-import { existsSync, mkdirSync, writeFileSync, rmSync } from 'fs';
-import { join } from 'path';
+import { imageUpload } from './google-api/gdrive';
 
-/**
- * Saves the provided image data to a file and returns the relative path to it.
- * @param filename The name of the image to be saved.
- * @param data The image data.
- * @param glimpseSlug The slug of the Glimpse.
- * @returns The relative path to where the image was saved.
- */
-export async function saveImage(
-  filename: string,
-  glimpseSlug: string,
-  data: Promise<Buffer>,
-): Promise<string> {
-  const relativePath = join(
-    '/uploads',
-    glimpseSlug,
-    Date.now().toString() + filename,
-  );
-  if (!existsSync(join(__dirname, '../../uploads', glimpseSlug))) {
-    mkdirSync(join(__dirname, '../../uploads', glimpseSlug), {
-      recursive: true,
-    });
+export async function getFileURL(data: Promise<Buffer>, filename: string) {
+  try {
+    const buffer: Buffer = await data;
+    return await imageUpload(filename, buffer);
+  } catch (error) {
+    console.error('Error:', error);
   }
-  const filePath = join(__dirname, '../../', relativePath);
-  data.then((buffer: Buffer) => {
-    writeFileSync(filePath, buffer);
-  });
-  return relativePath.replace(/\\/g, '/');
-}
-
-export async function deleteImage(filePath: string): Promise<void> {
-  rmSync(join(__dirname, '../../', filePath), { force: true });
 }
