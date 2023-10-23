@@ -54,7 +54,6 @@ export const RichTextEditor: React.FC<props> = ({ glimpse }: props) => {
                 {
                   method: 'put',
                   body: formData,
-                  cache: 'no-store',
                 },
               )
 
