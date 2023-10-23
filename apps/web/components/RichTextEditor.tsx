@@ -57,7 +57,7 @@ export const RichTextEditor: React.FC<props> = ({ glimpse }: props) => {
                 },
               )
 
-              if (res.status == 200) {
+              if (res.status == 200 || res.status == 201) {
                 toast({
                   title: 'Success!',
                   status: 'success',
