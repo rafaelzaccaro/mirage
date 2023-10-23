@@ -2,7 +2,7 @@ import { join } from 'path';
 import { cwd } from 'process';
 import { authenticate } from '@google-cloud/local-auth';
 import { google } from 'googleapis';
-import { readFile, readFileSync, writeFileSync } from 'fs';
+import { readFile, /*readFileSync,*/ writeFileSync } from 'fs';
 
 export type OAuth2Client = typeof google.prototype.auth.OAuth2.prototype;
 
@@ -21,8 +21,8 @@ const CREDENTIALS_PATH = join(cwd(), 'lib/google-api/credentials.json');
  */
 async function loadSavedCredentialsIfExist(): Promise<OAuth2Client | null> {
   try {
-    const content = readFileSync(TOKEN_PATH, 'utf-8');
-    const credentials = JSON.parse(content);
+    //const content = readFileSync(TOKEN_PATH, 'utf-8');
+    const credentials = JSON.parse(process.env.GOOGLEAUTH_TOKEN!);
     return google.auth.fromJSON(credentials);
   } catch (err) {
     return null;
